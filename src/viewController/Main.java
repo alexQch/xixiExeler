@@ -19,15 +19,11 @@ public class Main extends Application {
         primaryStage.setTitle("Hello World!");
         Button btn = new Button();
         btn.setText("Say 'Hello World'");
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    Tester.createWb();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        btn.setOnAction( (ActionEvent event) -> {
+            try {
+                Tester.readWb();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         });
 
