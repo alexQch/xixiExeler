@@ -44,6 +44,11 @@ public class Tester {
 		String safeName = WorkbookUtil.createSafeSheetName("[O'Brien's sales*?]"); // returns " O'Brien's sales   "
 		Sheet sheet3 = wb.createSheet(safeName);
 
+		Row row = sheet1.createRow(0);
+		row.createCell(0).setCellValue("a");
+		row.createCell(1).setCellValue(1.2);
+		row.createCell(2).setCellValue(true);
+
 		FileOutputStream fileOut = new FileOutputStream("workbook.xls");
 		wb.write(fileOut);
 		fileOut.close();
@@ -57,7 +62,7 @@ public class Tester {
 		HSSFCell cellA1 = row1.getCell(0);
 		String a1Val = cellA1.getStringCellValue();
 		HSSFCell cellB1 = row1.getCell(1);
-		String b1Val = cellB1.getStringCellValue();
+		double b1Val = cellB1.getNumericCellValue();
 
 		System.out.println("A1: " + a1Val);
 		System.out.println("B1: " + b1Val);
