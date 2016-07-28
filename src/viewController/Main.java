@@ -7,6 +7,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import model.Tester;
+
+import java.io.IOException;
 
 public class Main extends Application {
 
@@ -20,7 +23,11 @@ public class Main extends Application {
 
             @Override
             public void handle(ActionEvent event) {
-                System.out.println("Hello World!");
+                try {
+                    Tester.createWb();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
