@@ -22,11 +22,12 @@ import java.util.Date;
  * This class is used for handling the Excel
  */
 public class ExcelHandler {
+    public final static String path = "/home/chenhui/myworkplace/xixiExeler/testFiles/";
 
     //parse the excel file and grep the needed entries and create the new excel file
     public static void parseFile() throws IOException {
         //read the excel file
-        FileInputStream fileInputStream = new FileInputStream("/home/chenhui/myworkplace/xixiExeler/testFiles/591_591_2.xls");
+        FileInputStream fileInputStream = new FileInputStream(path + "591_591_2.xls");
         HSSFWorkbook workbook = new HSSFWorkbook(fileInputStream);
         HSSFSheet worksheet = workbook.getSheet("Sheet1");
         int lastRow = worksheet.getLastRowNum();
@@ -43,7 +44,7 @@ public class ExcelHandler {
         row.createCell(1).setCellValue(1.2);
         row.createCell(2).setCellValue(true);
 
-        FileOutputStream fileOut = new FileOutputStream("/home/chenhui/myworkplace/xixiExeler/testFiles/workbook.xls");
+        FileOutputStream fileOut = new FileOutputStream(path + "workbook.xls");
         wb.write(fileOut);
         fileOut.close();
     }
