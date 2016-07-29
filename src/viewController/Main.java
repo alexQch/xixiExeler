@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import model.ExcelHandler;
 import model.Tester;
 
 import java.io.IOException;
@@ -38,6 +39,17 @@ public class Main extends Application {
             }
         });
 
+
+        Button btn3 = new Button();
+        btn3.setText("'ParseFile'");
+        btn3.setOnAction( (ActionEvent event)->{
+            try {
+                ExcelHandler.parseFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
         StackPane root = new StackPane();
         FlowPane flow = new FlowPane();
         flow.setPadding(new Insets(5, 0, 5, 0));
@@ -48,6 +60,7 @@ public class Main extends Application {
         root.getChildren().add(flow);
         flow.getChildren().add(btn2);
         flow.getChildren().add(btn);
+        flow.getChildren().add(btn3);
         primaryStage.setScene(new Scene(root, 300, 250));
         primaryStage.show();
     }
