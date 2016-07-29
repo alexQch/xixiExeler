@@ -12,6 +12,9 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.WorkbookUtil;
 
 import java.io.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 /**
@@ -22,17 +25,27 @@ public class ExcelHandler {
 
     //parse the excel file and grep the needed entries and create the new excel file
     public static void parseFile() throws IOException {
+        //read the excel file
         FileInputStream fileInputStream = new FileInputStream("/home/chenhui/myworkplace/xixiExeler/testFiles/591_591_2.xls");
         HSSFWorkbook workbook = new HSSFWorkbook(fileInputStream);
         HSSFSheet worksheet = workbook.getSheet("Sheet1");
-        HSSFRow row1 = worksheet.getRow(0);
-        HSSFCell cellA1 = row1.getCell(0);
-        String a1Val = cellA1.getStringCellValue();
-        HSSFCell cellB1 = row1.getCell(1);
-        String b1Val = cellB1.getStringCellValue();
+        int lastRow = worksheet.getLastRowNum();
+        HSSFRow row1 = worksheet.getRow(lastRow);
+        HSSFCell dateCell = row1.getCell(1);
+        String submittedDate = dateCell.getStringCellValue();
+        System.out.println(submittedDate);
 
-        System.out.println("A1: " + a1Val);
-        System.out.println("B1: " + b1Val);
+        //create the excel file
+        Workbook wb = new HSSFWorkbook();  // or new XSSFWorkbook();
+        Sheet sheet1 = wb.createSheet("Sheet1");
+        Row row = sheet1.createRow(0);
+        row.createCell(0).setCellValue("a");
+        row.createCell(1).setCellValue(1.2);
+        row.createCell(2).setCellValue(true);
+
+        FileOutputStream fileOut = new FileOutputStream("/home/chenhui/myworkplace/xixiExeler/testFiles/workbook.xls");
+        wb.write(fileOut);
+        fileOut.close();
     }
 
 
