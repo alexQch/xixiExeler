@@ -1,3 +1,4 @@
+
 Sub Marcro1()
     Sheets("Sheet1").Select
     Sheets("Sheet1").Name = "My Sheet"
@@ -58,7 +59,8 @@ Sub copyToNewSheet()
     'Set sh2 = ThisWorkbook.Sheets("Sheet2")
     
     
-    exampleDate = DateValue("2016/7/28 21:44:34")
+    'get the latest value
+    exampleDate = DateValue(Range("B" & lastrow).Value)
     For x = lastrow To 1 Step -1
         If DateValue(Cells(x, 2).Value) <> exampleDate Then
             Exit For
@@ -109,7 +111,6 @@ Sub allTogether()
     Call shiftColumn
     Call copyToNewSheet
 End Sub
-
 
 
 
