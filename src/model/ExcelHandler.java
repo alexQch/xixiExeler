@@ -20,9 +20,11 @@ import java.util.Date;
 /**
  * Created by chenhui on 7/29/16.
  * This class is used for handling the Excel
+ * rows to keep: 0, 1, 6 ~ 15
  */
 public class ExcelHandler {
     public final static String path = "/home/chenhui/myworkplace/xixiExeler/testFiles/";
+    public final static int[] needNum = {0,1,15,6,7,8,9,10,11,12,13,14};
 
     //parse the excel file and grep the needed entries and create the new excel file
     public static void parseFile() throws IOException {
@@ -32,9 +34,14 @@ public class ExcelHandler {
         HSSFSheet worksheet = workbook.getSheet("Sheet1");
         int lastRow = worksheet.getLastRowNum();
         HSSFRow row1 = worksheet.getRow(lastRow);
-        HSSFCell dateCell = row1.getCell(1);
-        String submittedDate = dateCell.getStringCellValue();
-        System.out.println(submittedDate);
+
+        for(int i = 0; i < needNum.length; i++){
+            System.out.println("i: " + i + " cellNum: " + needNum[i]);
+            HSSFCell dateCell = row1.getCell(needNum[i]);
+            int cellValue = dateCell.getCellType();
+            System.out.println(cellValue + '\t');
+        }
+
 
         //create the excel file
         Workbook wb = new HSSFWorkbook();  // or new XSSFWorkbook();
