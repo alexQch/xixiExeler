@@ -60,22 +60,31 @@ Sub copyToNewSheet()
     sh2.Range("F" & sumLineNum).Formula = "=Sum(F2" & ":F" & activeLastrow & ")"
     sh2.Range("G" & sumLineNum).Formula = "=Sum(G2" & ":G" & activeLastrow & ")"
     sh2.Range("H" & sumLineNum).Formula = "=Sum(H2" & ":H" & activeLastrow & ")"
-    
-
+    Call validateData(sh2.Name, activeLastrow)
+    Call colorizeIt(sh2.Name, sumLineNum)
+    Call screenShot(sh2.Name, sumLineNum)
+    MsgBox ("DONE")
 End Sub
 
 'ultimately should pass a parameter of the sheet name
 Sub colorizeIt(shName As String, endrow As Long)
      Set sh = ThisWorkbook.Sheets(shName)
      sh.Range("D1:D" & endrow).Interior.ColorIndex = 43
+     
 End Sub
 
 
+Sub validateData(shName As String, lastrow As Long)
+ For Each c In Worksheets(shName).Range("D2:H" & lastrow).Cells
+        If IsNumeric(c) Then c.Value = Val(c.Value)
+    Next
+End Sub
 
-Sub Tester()
-    Sheet1.Range("D5:E16").Copy
-    Sheet2.Activate
-    Sheet2.Range("A20").Select
+
+Sub screenShot(shName As String, lastrow As Long)
+    Set sh = ThisWorkbook.Sheets(shName)
+    sh.Range("A1:L" & lastrow).Copy
+    sh.Range("O1").Select
     ActiveSheet.Pictures.Paste Link:=True
     Application.CutCopyMode = False
 End Sub
