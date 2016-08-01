@@ -94,7 +94,7 @@ Sub screenShot(shName As String, lastrow As Long)
     Set sh = ThisWorkbook.Sheets(shName)
     sh.Range("A1:L" & lastrow).Copy
     sh.Range("O1").Select
-    ActiveSheet.Pictures.Paste Link:=True
+    sh.Pictures.Paste Link:=True
     Application.CutCopyMode = False
 End Sub
 
