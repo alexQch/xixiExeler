@@ -2,30 +2,28 @@ Sub copyToNewSheet()
     Dim x As Long, lastrow As Long, startrow As Long, activeLastrow As Long
     Dim sumLineNum As Long
 
-    lastrow = Cells(Rows.Count, 1).End(xlUp).Row
-    'MsgBox lastrow
-
-
-
     Set sh = ThisWorkbook.Sheets("Sheet1")
     'Set sh2 = ThisWorkbook.Sheets("Sheet2")
 
+    lastrow = sh.Cells(Rows.Count, 1).End(xlUp).Row
+    MsgBox lastrow
 
     'get the latest value
-    exampleDate = DateValue(Range("B" & lastrow).Value)
+    exampleDate = DateValue(sh.Range("B" & lastrow).Value)
     For x = lastrow To 1 Step -1
-        If DateValue(Cells(x, 2).Value) <> exampleDate Then
+        If DateValue(sh.Cells(x, 2).Value) <> exampleDate Then
             Exit For
         End If
     Next x
 
     'get the start row here
     startrow = x + 1
-    'MsgBox startrow
+    MsgBox startrow
 
     ' Add a new worksheet.
     Sheets.Add After:=Sheets(Sheets.Count)
     Set sh2 = ThisWorkbook.Sheets("Sheet" & Sheets.Count)
+    
 
     'sh.Range("A1:L1").Copy _
     'Destination:=sh2.Range("A1")
@@ -62,14 +60,25 @@ Sub copyToNewSheet()
     sh2.Range("F" & sumLineNum).Formula = "=Sum(F2" & ":F" & activeLastrow & ")"
     sh2.Range("G" & sumLineNum).Formula = "=Sum(G2" & ":G" & activeLastrow & ")"
     sh2.Range("H" & sumLineNum).Formula = "=Sum(H2" & ":H" & activeLastrow & ")"
+    
 
 End Sub
 
-'this sub can take a screen shot of a range and save to some where else
-Sub Tester() 
-    Sheet1.Range("D5:E16").Copy 
+'ultimately should pass a parameter of the sheet name
+Sub colorizeIt(shName As String, endrow As Long)
+     Set sh = ThisWorkbook.Sheets(shName)
+     sh.Range("D1:D" & endrow).Interior.ColorIndex = 43
+     MsgBox ("DONE")
+End Sub
+
+
+
+Sub Tester()
+    Sheet1.Range("D5:E16").Copy
     Sheet2.Activate
-    Sheet2.Range("A1").Select 
-    ActiveSheet.Pictures.Paste Link:=True 
-    Application.CutCopyMode = False 
-End Sub 
+    Sheet2.Range("A20").Select
+    ActiveSheet.Pictures.Paste Link:=True
+    Application.CutCopyMode = False
+End Sub
+
+
