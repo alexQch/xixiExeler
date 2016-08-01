@@ -68,7 +68,6 @@ End Sub
 Sub colorizeIt(shName As String, endrow As Long)
      Set sh = ThisWorkbook.Sheets(shName)
      sh.Range("D1:D" & endrow).Interior.ColorIndex = 43
-     MsgBox ("DONE")
 End Sub
 
 
