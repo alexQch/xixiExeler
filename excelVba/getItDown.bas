@@ -23,7 +23,7 @@ Sub copyToNewSheet()
     ' Add a new worksheet.
     Sheets.Add After:=Sheets(Sheets.Count)
     Set sh2 = ThisWorkbook.Sheets("Sheet" & Sheets.Count)
-    
+
 
     'sh.Range("A1:L1").Copy _
     'Destination:=sh2.Range("A1")
