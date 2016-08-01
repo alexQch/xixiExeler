@@ -6,7 +6,7 @@ Sub copyToNewSheet()
     'Set sh2 = ThisWorkbook.Sheets("Sheet2")
 
     lastrow = sh.Cells(Rows.Count, 1).End(xlUp).Row
-    MsgBox lastrow
+    'MsgBox lastrow
 
     'get the latest value
     exampleDate = DateValue(sh.Range("B" & lastrow).Value)
@@ -18,7 +18,7 @@ Sub copyToNewSheet()
 
     'get the start row here
     startrow = x + 1
-    MsgBox startrow
+    'MsgBox startrow
 
     ' Add a new worksheet.
     Sheets.Add After:=Sheets(Sheets.Count)
@@ -69,18 +69,27 @@ End Sub
 'ultimately should pass a parameter of the sheet name
 Sub colorizeIt(shName As String, endrow As Long)
      Set sh = ThisWorkbook.Sheets(shName)
+     'make the D column green
      sh.Range("D1:D" & endrow).Interior.ColorIndex = 43
-     
+
+    'set WrapText and AutoFit for this range
+     sh.Range("A1:L" & endrow).WrapText = True
+     sh.Columns("A:L").AutoFit
 End Sub
 
 
 Sub validateData(shName As String, lastrow As Long)
- For Each c In Worksheets(shName).Range("D2:H" & lastrow).Cells
+
+    'If the contents of the cell looks like a numeric value, convert
+    ' the cell to be numeirc
+    For Each c In Worksheets(shName).Range("D2:H" & lastrow).Cells
         If IsNumeric(c) Then c.Value = Val(c.Value)
     Next
+
 End Sub
 
 
+'take the screen shot of the target area
 Sub screenShot(shName As String, lastrow As Long)
     Set sh = ThisWorkbook.Sheets(shName)
     sh.Range("A1:L" & lastrow).Copy
