@@ -65,7 +65,11 @@ Sub copyToNewSheet()
 
 End Sub
 
-
-
-
-
+'this sub can take a screen shot of a range and save to some where else
+Sub Tester() 
+    Sheet1.Range("D5:E16").Copy 
+    Sheet2.Activate
+    Sheet2.Range("A1").Select 
+    ActiveSheet.Pictures.Paste Link:=True 
+    Application.CutCopyMode = False 
+End Sub 
