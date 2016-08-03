@@ -59,9 +59,10 @@ Sub copyToNewSheet()
     sh2.Range("F" & sumLineNum).Formula = "=Sum(F2" & ":F" & activeLastrow & ")"
     sh2.Range("G" & sumLineNum).Formula = "=Sum(G2" & ":G" & activeLastrow & ")"
     sh2.Range("H" & sumLineNum).Formula = "=Sum(H2" & ":H" & activeLastrow & ")"
-    Call validateData(sh2.Name, activeLastrow)
-    Call colorizeIt(sh2.Name, sumLineNum)
-    Call screenShot(sh2.Name, sumLineNum)
+    Call validateData(sh2.name, activeLastrow)
+    Call colorizeIt(sh2.name, sumLineNum)
+    Call screenShot(sh2.name, sumLineNum)
+    Call checkIfSubmitted(sh2.name, activeLastrow)
     MsgBox ("DONE")
 End Sub
 
@@ -110,4 +111,44 @@ Sub screenShot(shName As String, lastrow As Long)
     Application.CutCopyMode = False
 End Sub
 
+Sub checkIfSubmitted(shName As String, lastrow As Long)
+    Dim x As Long, y As Long, found As Boolean
+
+
+    Dim names(1 To 8) As String, arrayLen As Long
+    arrayLen = 8
+
+    names(1) = "尹美林"
+    names(2) = "张金娣"
+    names(3) = "黄秀莲"
+    names(4) = "亓庆涛"
+    names(5) = "伍斯斯"
+    names(6) = "余治伟"
+    names(7) = "谢瑞琴"
+    names(8) = "Alex"
+
+    Set sh = ThisWorkbook.Sheets(shName)
+
+    'insert the not found statement
+    sh.Cells(lastrow + 2, 1).Value = "没有提交的人有： "
+    Dim totalNumNotFound As Long
+    totalNumNotFound = 0
+
+    For x = 2 To arrayLen
+        For y = 2 To lastrow
+            'the Value2 used here can ignore the formatting
+            If sh.Cells(y, 3).Value2 = names(x) Then
+                'MsgBox ("found match!")
+                GoTo FoundMatch
+            End If
+            If y = lastrow And sh.Cells(y, 3).Value2 <> names(x) Then
+                MsgBox ("Not FOUND " + names(x))
+                totalNumNotFound = totalNumNotFound + 1
+                sh.Cells(lastrow + 2 + totalNumNotFound, 1).Value = names(x)
+            End If
+        Next y
+FoundMatch:
+    Next x
+
+End Sub
 
