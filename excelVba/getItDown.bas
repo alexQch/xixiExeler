@@ -17,6 +17,7 @@ Sub copyToNewSheet()
     Next x
 
     'get the start row here
+    'TODO should not need to do the x + 1 here, need to confirm
     startrow = x + 1
     'MsgBox startrow
 
