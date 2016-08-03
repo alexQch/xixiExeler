@@ -121,18 +121,26 @@ End Sub
 Sub checkIfSubmitted(shName As String, lastrow As Long)
     Dim x As Long, y As Long, found As Boolean
 
-
-    Dim names(1 To 8) As String, arrayLen As Long
-    arrayLen = 8
-
-    names(1) = "尹美林"
-    names(2) = "张金娣"
-    names(3) = "黄秀莲"
-    names(4) = "亓庆涛"
-    names(5) = "伍斯斯"
-    names(6) = "余治伟"
-    names(7) = "谢瑞琴"
-    names(8) = "Alex"
+    'when changing the array size remember to change all related places
+    Dim names(1 To 17) As String, arrayLen As Long
+    arrayLen = 17
+    names(1) = "陈和贵"
+    names(2) = "刘定希"
+    names(3) = "陈美滨"
+    names(4) = "匡书光"
+    names(5) = "梁嘉雯"
+    names(6) = "刘振宇"
+    names(7) = "李敏"
+    names(8) = "朱强"
+    names(9) = "李小敏"
+    names(10) = "谭荣彬"
+    names(11) = "任宇"
+    names(12) = "汤利红"
+    names(13) = "张海燕"
+    names(14) = "曾艳芬"
+    names(15) = "易畅"
+    names(16) = "张玉荣"
+    names(17) = "赵金凤"
 
     Set sh = ThisWorkbook.Sheets(shName)
 
