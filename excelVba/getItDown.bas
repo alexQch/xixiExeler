@@ -150,5 +150,10 @@ Sub checkIfSubmitted(shName As String, lastrow As Long)
 FoundMatch:
     Next x
 
+    If arrayLen <> lastrow - 1 + totalNumNotFound Then
+        sh.Cells(lastrow + 2 + totalNumNotFound + 1, 1).Value = "人数对不上， 请复检。"
+    End If
+
+
 End Sub
 
