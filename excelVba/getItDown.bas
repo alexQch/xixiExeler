@@ -25,7 +25,6 @@ Sub copyToNewSheet()
     Set sh2 = ThisWorkbook.Sheets("Sheet" & Sheets.Count)
 
 
-    'sh.Range("A1:L1").Copy _
     'Destination:=sh2.Range("A1")
     sh2.Range("A1").Value = "序号"
     sh2.Range("B1").Value = "提交答卷时间"
@@ -68,6 +67,8 @@ End Sub
 
 'ultimately should pass a parameter of the sheet name
 Sub colorizeIt(shName As String, endrow As Long)
+    Dim x As Long
+
      Set sh = ThisWorkbook.Sheets(shName)
      'make the D column green
      sh.Range("D1:D" & endrow).Interior.ColorIndex = 43
@@ -75,6 +76,17 @@ Sub colorizeIt(shName As String, endrow As Long)
     'set WrapText and AutoFit for this range
      sh.Range("A1:L" & endrow).WrapText = True
      sh.Columns("A:L").AutoFit
+
+     'colorize G H I column
+     For x = 2 To endrow - 1 Step 1
+        If IsNumeric(sh.Cells(x, 8)) Then
+            If sh.Cells(x, 8).Value > 0 Then
+                If IsNumeric(sh.Cells(x, 7)) And sh.Cells(x, 7) > 0 Then
+                    sh.Range("G" & x & ":I" & x).Interior.ColorIndex = 6
+                End If
+            End If
+        End If
+     Next x
 End Sub
 
 
