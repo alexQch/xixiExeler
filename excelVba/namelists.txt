@@ -23,6 +23,8 @@ With g1People
     .add "肖忠颖"
     .add "戴诗纬"
     .add "尹美林"
+End With
+
 
 Group3
 With g2People
@@ -43,3 +45,4 @@ With g2People
     .add "易畅"
     .add "张玉荣"
     .add "赵金凤"
+End With
