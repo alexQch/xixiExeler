@@ -17,7 +17,6 @@ Sub copyToNewSheet()
     Next x
 
     'get the start row here
-    'TODO should not need to do the x + 1 here, need to confirm
     startrow = x + 1
     'MsgBox startrow
 
@@ -56,9 +55,15 @@ Sub copyToNewSheet()
 
     activeLastrow = 2 + lastrow - startrow
     sumLineNum = activeLastrow + 1
+    
+    'change the index num
+    For x = 2 To activeLastrow Step 1
+        sh2.Cells(x, 1).Value = x - 1
+    Next x
+    
 
     'validate data
-    Call validateData(sh2.name, activeLastrow)
+    Call validateData(sh2.Name, activeLastrow)
 
     'sum the selected row
     sh2.Range("D" & sumLineNum).Formula = "=Sum(D2" & ":D" & activeLastrow & ")"
@@ -67,10 +72,10 @@ Sub copyToNewSheet()
     sh2.Range("G" & sumLineNum).Formula = "=Sum(G2" & ":G" & activeLastrow & ")"
     sh2.Range("H" & sumLineNum).Formula = "=Sum(H2" & ":H" & activeLastrow & ")"
 
-    Call colorizeIt(sh2.name, sumLineNum)
-    Call addFormatting(sh2.name, sumLineNum)
-    Call screenShot(sh2.name, sumLineNum)
-    Call checkIfSubmitted(sh2.name, activeLastrow)
+    Call colorizeIt(sh2.Name, sumLineNum)
+    Call addFormatting(sh2.Name, sumLineNum)
+    Call screenShot(sh2.Name, sumLineNum)
+    Call checkIfSubmitted(sh2.Name, activeLastrow)
     MsgBox ("DONE")
 End Sub
 
@@ -189,3 +194,4 @@ Sub addFormatting(shName As String, endrow As Long)
     End With
 
 End Sub
+
