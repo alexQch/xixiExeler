@@ -15,6 +15,7 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 
 
+
 Dim g1People As Collection, g2People As Collection
 
 Sub copyToNewSheet()
@@ -129,7 +130,11 @@ Sub validateData(shName As String, lastrow As Long)
     'If the contents of the cell looks like a numeric value, convert
     ' then cell to be numeirc
     For Each c In Worksheets(shName).Range("D2:H" & lastrow).Cells
-        If IsNumeric(c) Then c.Value = Val(c.Value)
+        If IsNumeric(c) Then
+            c.Value = Val(c.Value)
+        Else
+            c.Interior.ColorIndex = 3
+        End If
     Next
 
 End Sub
