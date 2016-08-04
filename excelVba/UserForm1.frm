@@ -14,6 +14,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 
+
 Dim g1People As Collection, g2People As Collection
 
 Sub copyToNewSheet()
@@ -94,8 +95,8 @@ Sub copyToNewSheet()
     Call colorizeIt(sh2.Name, sumLineNum)
     Call addFormatting(sh2.Name, sumLineNum)
     Call screenShot(sh2.Name, sumLineNum)
-    Call checkIfSubmitted(sh2.Name, activeLastrow)
-    MsgBox ("DONE")
+    Call summarize(sh2.Name, activeLastrow)
+    MsgBox ("For my dearest girl :)")
 End Sub
 
 'ultimately should pass a parameter of the sheet name
@@ -143,13 +144,45 @@ Sub screenShot(shName As String, lastrow As Long)
     Application.CutCopyMode = False
 End Sub
 
-Sub checkIfSubmitted(shName As String, lastrow As Long)
+Sub summarize(shName As String, lastrow As Long)
     Dim x As Long, y As Long, found As Boolean
+    Dim startIndex As Long
+    Dim line1String As String, notFoundPeople As String
+    
+    startIndex = lastrow + 2
 
     Set sh = ThisWorkbook.Sheets(shName)
 
     'insert the not found statement
-    sh.Cells(lastrow + 2, 1).Value = "没有提交的人有： "
+    sh.Cells(startIndex, 1).Value = "今日总结： "
+    sh.Cells(startIndex, 1).Font.Bold = True
+    startIndex = startIndex + 1
+    
+    If OptionButton1.Value Then
+        line1String = "越秀一二区工作达成报告"
+    Else
+        line1String = "越秀三区工作达成报告"
+    End If
+    
+    sh.Cells(startIndex, 1).Value = Date & line1String
+    startIndex = startIndex + 1
+    
+    sh.Cells(startIndex, 1).Value = "截止至" & Time() & "共 " & lastrow - 1 & " 位主管提交"
+    startIndex = startIndex + 1
+    
+    sh.Cells(startIndex, 1).Value = "总计面谈增员数：" & sh.Cells(lastrow + 1, 4).Value & "人"
+    startIndex = startIndex + 1
+
+    sh.Cells(startIndex, 1).Value = "总计拜访客户：" & sh.Cells(lastrow + 1, 5).Value & "人"
+    startIndex = startIndex + 1
+    
+    sh.Cells(startIndex, 1).Value = "总计送计划书：" & sh.Cells(lastrow + 1, 6).Value & "份"
+    startIndex = startIndex + 1
+    
+'     sh.Cells(startIndex, 1).Value = "未提交主管名单如下："
+    notFoundPeople = "未提交主管名单如下："
+
+    
     Dim totalNumNotFound As Long
     totalNumNotFound = 0
     
@@ -171,14 +204,18 @@ Sub checkIfSubmitted(shName As String, lastrow As Long)
             End If
             If y = lastrow And sh.Cells(y, 3).Value2 <> selectedCole.Item(x) Then
                 totalNumNotFound = totalNumNotFound + 1
-                sh.Cells(lastrow + 2 + totalNumNotFound, 1).Value = selectedCole.Item(x)
+                'sh.Cells(startIndex, totalNumNotFound + 1).Value = selectedCole.Item(x)
+                notFoundPeople = notFoundPeople & selectedCole.Item(x) & " "
             End If
         Next y
 FoundMatch:
     Next x
+    
+    sh.Cells(startIndex, 1).Value = notFoundPeople
+    startIndex = startIndex + 1
 
     If selectedCole.Count <> lastrow - 1 + totalNumNotFound Then
-        sh.Cells(lastrow + 2 + totalNumNotFound + 1, 1).Value = "人数对不上， 请复检。"
+        sh.Cells(startIndex + 1, 1).Value = "人数对不上， 请复检。"
     End If
 
 
@@ -209,7 +246,7 @@ End Sub
 
 Private Sub CommandButton1_Click()
     
-    MsgBox ("Button clicked")
+    'MsgBox (Date)
     'Call copyToNewSheet
     
     If (Not OptionButton1.Value) And (Not OptionButton2.Value) Then
@@ -267,5 +304,8 @@ Private Sub UserForm_Initialize()
     For x = 1 To g2People.Count Step 1
         ListBox2.AddItem (g2People.Item(x))
     Next x
+    
+    'MsgBox (Time())
+    
     
 End Sub
