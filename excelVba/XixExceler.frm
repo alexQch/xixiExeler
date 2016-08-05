@@ -5,7 +5,7 @@ Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} UserForm1
    ClientLeft      =   45
    ClientTop       =   330
    ClientWidth     =   7245
-   OleObjectBlob   =   "UserForm1.frx":0000
+   OleObjectBlob   =   "XixExceler.frx":0000
    StartUpPosition =   1  '所有者中心
 End
 Attribute VB_Name = "UserForm1"
@@ -13,6 +13,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
 
 
 
@@ -282,25 +283,55 @@ Private Sub UserForm_Initialize()
     
     'MsgBox ("For my dearest girl :P")
     
-    With g1People
-        .Add "尹美林"
-        .Add "张金娣"
-        .Add "黄秀莲"
-        .Add "亓庆涛"
-        .Add "伍斯斯"
-        .Add "余治伟"
-        .Add "谢瑞琴"
-    End With
     
-        With g2People
-        .Add "a"
-        .Add "b"
-        .Add "d"
-        .Add "c"
-        .Add "f"
-        .Add "e"
-        .Add "g"
-    End With
+   ' Group 1 And 2
+With g1People
+    .Add "陈文玉"
+    .Add "张金娣"
+    .Add "雷己兰"
+    .Add "谭晓云"
+    .Add "谢渠成"
+    .Add "杨璐璐"
+    .Add "胡彬"
+    .Add "罗志刚"
+    .Add "黄秀莲"
+    .Add "谢瑞琴"
+    .Add "成取英"
+    .Add "成兰英"
+    .Add "余治伟"
+    .Add "梁艳红"
+    .Add "袁嘉能"
+    .Add "郭剑章"
+    .Add "伍斯斯"
+    .Add "亓庆涛"
+    .Add "姚健"
+    .Add "叶俊明"
+    .Add "肖忠颖"
+    .Add "戴诗纬"
+    .Add "尹美林"
+End With
+
+
+'Group3
+With g2People
+    .Add "陈和贵"
+    .Add "刘定希"
+    .Add "陈美滨"
+    .Add "匡书光"
+    .Add "梁嘉雯"
+    .Add "刘振宇"
+    .Add "李敏"
+    .Add "朱强"
+    .Add "李小敏"
+    .Add "谭荣彬"
+    .Add "任宇"
+    .Add "汤利红"
+    .Add "张海燕"
+    .Add "曾艳芬"
+    .Add "易畅"
+    .Add "张玉荣"
+    .Add "赵金凤"
+End With
     
     For x = 1 To g1People.Count Step 1
         ListBox1.AddItem (g1People.Item(x))
