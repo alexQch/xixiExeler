@@ -17,6 +17,7 @@ Attribute VB_Exposed = False
 
 
 
+
 Dim g1People As Collection, g2People As Collection
 
 Sub copyToNewSheet()
@@ -134,7 +135,7 @@ Sub validateData(shName As String, lastrow As Long)
         If IsNumeric(c) Then
             c.Value = Val(c.Value)
         Else
-            c.Interior.ColorIndex = 3
+            c.Font.Color = vbRed
         End If
     Next
 
@@ -176,13 +177,19 @@ Sub summarize(shName As String, lastrow As Long)
     sh.Cells(startIndex, 1).Value = "截止至" & Time() & "共 " & lastrow - 1 & " 位主管提交"
     startIndex = startIndex + 1
     
-    sh.Cells(startIndex, 1).Value = "总计面谈增员数：" & sh.Cells(lastrow + 1, 4).Value & "人"
+    sh.Cells(startIndex, 1).Value = "总计面谈增员数："
+    sh.Cells(startIndex, 2).Formula = "=D" & lastrow + 1
+    sh.Cells(startIndex, 3).Value = "人"
     startIndex = startIndex + 1
 
-    sh.Cells(startIndex, 1).Value = "总计拜访客户：" & sh.Cells(lastrow + 1, 5).Value & "人"
+    sh.Cells(startIndex, 1).Value = "总计拜访客户："
+    sh.Cells(startIndex, 2).Formula = "=E" & lastrow + 1
+    sh.Cells(startIndex, 3).Value = "人"
     startIndex = startIndex + 1
     
-    sh.Cells(startIndex, 1).Value = "总计送计划书：" & sh.Cells(lastrow + 1, 6).Value & "份"
+    sh.Cells(startIndex, 1).Value = "总计送计划书："
+    sh.Cells(startIndex, 2).Formula = "=F" & lastrow + 1
+    sh.Cells(startIndex, 3).Value = "人"
     startIndex = startIndex + 1
     
 '     sh.Cells(startIndex, 1).Value = "未提交主管名单如下："
@@ -307,7 +314,7 @@ With g1People
     .Add "姚健"
     .Add "叶俊明"
     .Add "肖忠颖"
-    .Add "戴诗纬"
+    .Add "戴詩緯"
     .Add "尹美林"
 End With
 
