@@ -18,6 +18,7 @@ Attribute VB_Exposed = False
 
 
 
+
 Dim g1People As Collection, g2People As Collection
 
 Sub copyToNewSheet()
@@ -138,6 +139,16 @@ Sub validateData(shName As String, lastrow As Long)
             c.Font.Color = vbRed
         End If
     Next
+    
+    '检查保费是不是以万为单位
+    For Each c In Worksheets(shName).Range("H2:H" & lastrow).Cells
+        If IsNumeric(c) Then
+            c.Value = Val(c.Value)
+            If c.Value > 10 Then
+                c.Font.ColorIndex = 46
+            End If
+        End If
+    Next
 
 End Sub
 
@@ -228,7 +239,7 @@ FoundMatch:
     startIndex = startIndex + 1
 
     If selectedCole.Count <> lastrow - 1 + totalNumNotFound Then
-        sh.Cells(startIndex + 1, 1).Value = "人数对不上， 请复检。"
+        sh.Cells(startIndex + 1, 1).Value = "人数对不上， 请检查是否有人把自己名字写错"
     End If
 
 
@@ -249,6 +260,17 @@ Sub addFormatting(shName As String, endrow As Long)
         .LineStyle = xlContinuous
         .Weight = xlThin
     End With
+    
+    rng.BorderAround _
+        Weight:=xlThick
+        
+    sh.Range("A1:L1").BorderAround _
+        Weight:=xlThick
+        
+    
+    
+    rng.VerticalAlignment = xlCenter
+    rng.HorizontalAlignment = xlCenter
 
 End Sub
 
