@@ -1,14 +1,14 @@
 VERSION 5.00
-Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} UserForm1 
-   Caption         =   "UserForm1"
+Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} XixiExceler 
+   Caption         =   "XixiExceler"
    ClientHeight    =   6960
    ClientLeft      =   45
    ClientTop       =   330
    ClientWidth     =   7245
-   OleObjectBlob   =   "XixExceler.frx":0000
+   OleObjectBlob   =   "XixiExceler.frx":0000
    StartUpPosition =   1  '所有者中心
 End
-Attribute VB_Name = "UserForm1"
+Attribute VB_Name = "XixiExceler"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
@@ -19,21 +19,23 @@ Attribute VB_Exposed = False
 
 
 
+
+
 Dim g1People As Collection, g2People As Collection
 
 Sub copyToNewSheet()
-    Dim x As Long, lastrow As Long, startrow As Long, activeLastrow As Long
+    Dim x As Long, LastRow As Long, startrow As Long, activeLastrow As Long
     Dim sumLineNum As Long
 
     Set sh = ThisWorkbook.Sheets("Sheet1")
     'Set sh2 = ThisWorkbook.Sheets("Sheet2")
 
-    lastrow = sh.Cells(Rows.Count, 1).End(xlUp).Row
+    LastRow = sh.Cells(Rows.Count, 1).End(xlUp).Row
     'MsgBox lastrow
 
     'get the latest value
-    exampleDate = DateValue(sh.Range("B" & lastrow).Value)
-    For x = lastrow To 1 Step -1
+    exampleDate = DateValue(sh.Range("B" & LastRow).Value)
+    For x = LastRow To 1 Step -1
         If DateValue(sh.Cells(x, 2).Value) <> exampleDate Then
             Exit For
         End If
@@ -63,8 +65,16 @@ Sub copyToNewSheet()
     sh2.Range("O1").Value = "重点工作完成情况"
     sh2.Range("P1").Value = "面谈增员人数"
 
-    sh.Range("A" & startrow & ":P" & lastrow + 1).Copy _
+    sh.Range("A" & startrow & ":P" & LastRow + 1).Copy _
     Destination:=sh2.Range("A2")
+    
+    'remove the duplicates
+    Call DeleteDups(sh2.Name)
+    
+    'update the last row after deletion
+    activeLastrow = sh2.Cells(Rows.Count, 1).End(xlUp).Row
+    'MsgBox ("activelastrow: " & activeLastrow)
+    sumLineNum = activeLastrow + 1
 
     'delete selected column
     sh2.Columns("C:F").Select
@@ -74,11 +84,6 @@ Sub copyToNewSheet()
     sh2.Columns("L:L").Cut
     sh2.Columns("D:D").Insert Shift:=xlToRight
     Application.CutCopyMode = False
-
-
-    activeLastrow = 2 + lastrow - startrow
-    sumLineNum = activeLastrow + 1
-    
         
     'change the index num
     For x = 2 To activeLastrow Step 1
@@ -103,11 +108,43 @@ Sub copyToNewSheet()
     MsgBox ("For my dearest girl :)")
 End Sub
 
+
+'Delete duplicates
+Sub DeleteDups(shName As String)
+     
+    Dim x               As Long
+    Dim LastRow         As Long
+    Dim rowsToDelete    As Collection
+    
+    Set rowsToDelete = New Collection
+    
+    Set sh = ThisWorkbook.Sheets(shName)
+     
+    LastRow = sh.Range("A65536").End(xlUp).Row
+    For x = 1 To LastRow Step 1
+        'MsgBox ("x: " & x)
+        If Application.WorksheetFunction.CountIf(sh.Range("G1:G" & LastRow), sh.Range("G" & x).Value) > 1 Then
+            'MsgBox ("remove row: " & x)
+            sh.Range("G" & x).EntireRow.Delete
+            x = x - 1
+        End If
+    Next x
+    
+    'MsgBox ("Remove Duplicates Done!")
+    
+     
+End Sub
+
+
+
 'ultimately should pass a parameter of the sheet name
 Sub colorizeIt(shName As String, endrow As Long)
     Dim x As Long
 
      Set sh = ThisWorkbook.Sheets(shName)
+     'make header blue
+     sh.Range("A1:L1").Interior.ColorIndex = 37
+     
      'make the D column green
      sh.Range("D1:D" & endrow).Interior.ColorIndex = 43
 
@@ -121,6 +158,7 @@ Sub colorizeIt(shName As String, endrow As Long)
             If sh.Cells(x, 8).Value > 0 Then
                 If IsNumeric(sh.Cells(x, 7)) And sh.Cells(x, 7) > 0 Then
                     sh.Range("G" & x & ":I" & x).Interior.ColorIndex = 6
+                    sh.Range("G" & x & ":I" & x).Font.Bold = True
                 End If
             End If
         End If
@@ -128,11 +166,11 @@ Sub colorizeIt(shName As String, endrow As Long)
 End Sub
 
 
-Sub validateData(shName As String, lastrow As Long)
+Sub validateData(shName As String, LastRow As Long)
 
     'If the contents of the cell looks like a numeric value, convert
     ' then cell to be numeirc
-    For Each c In Worksheets(shName).Range("D2:H" & lastrow).Cells
+    For Each c In Worksheets(shName).Range("D2:H" & LastRow).Cells
         If IsNumeric(c) Then
             c.Value = Val(c.Value)
         Else
@@ -141,7 +179,7 @@ Sub validateData(shName As String, lastrow As Long)
     Next
     
     '检查保费是不是以万为单位
-    For Each c In Worksheets(shName).Range("H2:H" & lastrow).Cells
+    For Each c In Worksheets(shName).Range("H2:H" & LastRow).Cells
         If IsNumeric(c) Then
             c.Value = Val(c.Value)
             If c.Value > 10 Then
@@ -154,20 +192,20 @@ End Sub
 
 
 'take the screen shot of the target area
-Sub screenShot(shName As String, lastrow As Long)
+Sub screenShot(shName As String, LastRow As Long)
     Set sh = ThisWorkbook.Sheets(shName)
-    sh.Range("A1:L" & lastrow).Copy
+    sh.Range("A1:L" & LastRow).Copy
     sh.Range("O1").Select
     sh.Pictures.Paste Link:=True
     Application.CutCopyMode = False
 End Sub
 
-Sub summarize(shName As String, lastrow As Long)
+Sub summarize(shName As String, LastRow As Long)
     Dim x As Long, y As Long, found As Boolean
     Dim startIndex As Long
     Dim line1String As String, notFoundPeople As String
     
-    startIndex = lastrow + 2
+    startIndex = LastRow + 2
 
     Set sh = ThisWorkbook.Sheets(shName)
 
@@ -185,21 +223,21 @@ Sub summarize(shName As String, lastrow As Long)
     sh.Cells(startIndex, 1).Value = Date & line1String
     startIndex = startIndex + 1
     
-    sh.Cells(startIndex, 1).Value = "截止至" & Time() & "共 " & lastrow - 1 & " 位主管提交"
+    sh.Cells(startIndex, 1).Value = "截止至" & Time() & "共 " & LastRow - 1 & " 位主管提交"
     startIndex = startIndex + 1
     
     sh.Cells(startIndex, 1).Value = "总计面谈增员数："
-    sh.Cells(startIndex, 2).Formula = "=D" & lastrow + 1
+    sh.Cells(startIndex, 2).Formula = "=D" & LastRow + 1
     sh.Cells(startIndex, 3).Value = "人"
     startIndex = startIndex + 1
 
     sh.Cells(startIndex, 1).Value = "总计拜访客户："
-    sh.Cells(startIndex, 2).Formula = "=E" & lastrow + 1
+    sh.Cells(startIndex, 2).Formula = "=E" & LastRow + 1
     sh.Cells(startIndex, 3).Value = "人"
     startIndex = startIndex + 1
     
     sh.Cells(startIndex, 1).Value = "总计送计划书："
-    sh.Cells(startIndex, 2).Formula = "=F" & lastrow + 1
+    sh.Cells(startIndex, 2).Formula = "=F" & LastRow + 1
     sh.Cells(startIndex, 3).Value = "人"
     startIndex = startIndex + 1
     
@@ -220,13 +258,13 @@ Sub summarize(shName As String, lastrow As Long)
     
 
     For x = 1 To selectedCole.Count
-        For y = 2 To lastrow
+        For y = 2 To LastRow
             'the Value2 used here can ignore the formatting
             If sh.Cells(y, 3).Value2 = selectedCole.Item(x) Then
                 'MsgBox ("found match!")
                 GoTo FoundMatch
             End If
-            If y = lastrow And sh.Cells(y, 3).Value2 <> selectedCole.Item(x) Then
+            If y = LastRow And sh.Cells(y, 3).Value2 <> selectedCole.Item(x) Then
                 totalNumNotFound = totalNumNotFound + 1
                 'sh.Cells(startIndex, totalNumNotFound + 1).Value = selectedCole.Item(x)
                 notFoundPeople = notFoundPeople & selectedCole.Item(x) & " "
@@ -238,7 +276,7 @@ FoundMatch:
     sh.Cells(startIndex, 1).Value = notFoundPeople
     startIndex = startIndex + 1
 
-    If selectedCole.Count <> lastrow - 1 + totalNumNotFound Then
+    If selectedCole.Count <> LastRow - 1 + totalNumNotFound Then
         sh.Cells(startIndex + 1, 1).Value = "人数对不上， 请检查是否有人把自己名字写错"
     End If
 
